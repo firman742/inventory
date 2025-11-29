@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Public\AuthController;
+use App\Http\Controllers\Internal\ProductController;
+use App\Http\Controllers\Internal\ProductTypeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,5 +33,7 @@ Route::middleware(['session.auth'])->group(function () {
 
 
     // Product Type Routes
-    Route::resource('product-types', \App\Http\Controllers\Internal\ProductTypeController::class);
+    Route::resource('product-types', ProductTypeController::class);
+    // Product Routes
+    Route::resource('products', ProductController::class);
 });

@@ -6,6 +6,7 @@ use App\Enums\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductType extends Model
 {
@@ -18,4 +19,12 @@ class ProductType extends Model
         'description',
         'is_active',
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
 }

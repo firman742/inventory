@@ -25,9 +25,11 @@
                 <!-- ---------------------------------- -->
                 <!-- Dashboard -->
                 <!-- ---------------------------------- -->
-                <li class="sidebar-item">
+
+                <li
+                    class="sidebar-item {{ request()->routeIs('products.*') || request()->routeIs('product-types.*') ? 'selected' : '' }}">
                     <a class="sidebar-link justify-content-between has-arrow" href="javascript:void(0)"
-                        aria-expanded="false">
+                        aria-expanded="{{ request()->routeIs('products.*') || request()->routeIs('product-types.*') ? 'true' : 'false' }}">
                         <div class="d-flex align-items-center gap-3">
                             <span class="d-flex">
                                 <i class="ti ti-building-store"></i>
@@ -35,9 +37,11 @@
                             <span class="hide-menu">Produk</span>
                         </div>
                     </a>
-                    <ul aria-expanded="false" class="collapse first-level">
+                    <ul aria-expanded="{{ request()->routeIs('products.*') || request()->routeIs('product-types.*') ? 'true' : 'false' }}"
+                        class="collapse first-level {{ request()->routeIs('products.*') || request()->routeIs('product-types.*') ? 'in' : '' }}">
                         <li class="sidebar-item">
-                            <a class="sidebar-link justify-content-between" href="{{ route('product-types.index') }}">
+                            <a class="sidebar-link justify-content-between {{ request()->routeIs('product-types.*') ? 'active' : '' }}"
+                                href="{{ route('product-types.index') }}">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="round-16 d-flex align-items-center justify-content-center">
                                         <i class="ti ti-circle"></i>
@@ -47,7 +51,9 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link justify-content-between" href="">
+                            <a class="sidebar-link justify-content-between
+                            {{ request()->routeIs('products.*') ? 'active' : '' }}"
+                                href="{{ route('products.index') }}">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="round-16 d-flex align-items-center justify-content-center">
                                         <i class="ti ti-circle"></i>
