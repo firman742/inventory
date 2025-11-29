@@ -1,0 +1,44 @@
+flowchart TD
+
+    A[Start System] --> B[User Login or Register]
+    B --> C{Login Success?}
+    C -->|No| D[Show Error]
+    C -->|Yes| E[Go to Dashboard]
+
+    E --> F[Create Product Type]
+    F --> G[Create Product - SKU]
+    G --> H[Create Stock In Batch - IN-001]
+    H --> I[Start Scanning Serial Numbers]
+
+    I --> J[Scan Serial Barcode]
+    J --> K[Extract Serial Number]
+
+    K --> L{Match Product?}
+    L -->|No| M[Error: Product Not Found]
+    L -->|Yes| N[Save Serial to DB - in_stock]
+
+    N --> O[Create Transaction Type IN]
+    O --> P{More Serials?}
+    P -->|Yes| I
+    P -->|No| Q[Finish Stock In Batch]
+
+    Q --> R[Stock List Updated]
+
+    R --> S[Process Stock Out - OUT-001]
+    S --> T[Start Scan Serial Out]
+    T --> U[Scan Serial Barcode]
+
+    U --> V{Serial Exists?}
+    V -->|No| W[Error: Serial Not Found]
+    V -->|Yes| X{Status in_stock?}
+
+    X -->|No| Y[Error: Already Out or Invalid]
+    X -->|Yes| Z[Update to out_stock and Save Record]
+
+    Z --> AA[Create Transaction Type OUT]
+    AA --> AB{More Items?}
+    AB -->|Yes| T
+    AB -->|No| AC[Finish Stock Out Process]
+
+    AC --> AD[Export Stock Reports Excel]
+    AD --> AE[End]

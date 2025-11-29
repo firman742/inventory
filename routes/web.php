@@ -22,4 +22,14 @@ Route::get('/dashboard', function () {
         return redirect('/login')->with('error', 'Harap login dulu');
     }
     return view('Internal.dashboard');
+})->name('dashboard');
+
+Route::middleware(['session.auth'])->group(function () {
+    Route::get('/profile', function () {
+        return view('Internal.profile');
+    })->name('profile.show');
+
+
+    // Product Type Routes
+    Route::resource('product-types', \App\Http\Controllers\Internal\ProductTypeController::class);
 });
