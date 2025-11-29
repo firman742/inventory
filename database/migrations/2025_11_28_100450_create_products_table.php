@@ -16,9 +16,11 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->string('sku')->unique();
             $table->string('name');
-            $table->uuid('product_type_id')->constrained()->onDelete('cascade');
+            $table->uuid('product_type_id');
             $table->decimal('default_price',12,2)->nullable();
             $table->text('description')->nullable();
+
+            $table->foreign('product_type_id')->references('id')->on(Table::product_types->name)->onDelete('cascade');
             $table->timestamps();
         });
     }

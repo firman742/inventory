@@ -15,4 +15,8 @@ enum Table
 
     case products;
     case product_types;
+    case stock_in_batches;
+    case stock_outs;
+    case serials;
+    case transactions;
 }
