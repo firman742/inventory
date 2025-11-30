@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Public\AuthController;
 use App\Http\Controllers\Internal\ProductController;
 use App\Http\Controllers\Internal\ProductTypeController;
+use App\Http\Controllers\Internal\StockInBatchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,4 +37,11 @@ Route::middleware(['session.auth'])->group(function () {
     Route::resource('product-types', ProductTypeController::class);
     // Product Routes
     Route::resource('products', ProductController::class);
+    // Stock In Batch Routes
+    Route::resource('stock-in', StockInBatchController::class);
+
+    Route::get('stock-in/{stock_in}/serials', [StockInBatchController::class, 'serials'])->name('stock-in.serials.show');
+    Route::post('stock-in/{stock_in}/serials', [StockInBatchController::class, 'storeSerial'])
+    ->name('stock-in.serials.store');
+
 });

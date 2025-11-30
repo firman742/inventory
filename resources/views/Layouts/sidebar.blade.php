@@ -3,7 +3,7 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="{{ route('dashboard') }}" class="text-nowrap logo-img">
-                <img src="../assets/images/logos/logo.svg" alt="" />
+                <img src="{{ asset('assets/images/logos/logo.svg') }}" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-6"></i>
@@ -65,8 +65,8 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link justify-content-between"
-                        href="https://bootstrapdemos.adminmart.com/modernize/dist/main/index.html"
+                    <a class="sidebar-link justify-content-between {{ request()->routeIs('stock-in.*') ? 'active' : '' }}"
+                        href="{{ route('stock-in.index') }}"
                         aria-expanded="false">
                         <div class="d-flex align-items-center gap-3">
                             <span class="d-flex">

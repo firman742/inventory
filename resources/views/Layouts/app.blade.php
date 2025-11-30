@@ -9,6 +9,10 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}">
+
+    <!-- html5-qrcode -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    
     @stack('styles')
 </head>
 
@@ -17,13 +21,13 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
-        @include('layouts.sidebar')
+        @include('Layouts.sidebar')
         <!--  Sidebar End -->
 
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <!--  Header Start -->
-            @include('layouts.header')
+            @include('Layouts.header')
             <!--  Header End -->
 
             <div class="body-wrapper-inner">
@@ -52,6 +56,7 @@
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 
     @stack('scripts')
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </body>
 
 </html>

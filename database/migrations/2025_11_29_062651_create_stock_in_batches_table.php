@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('reference')->nullable();
             $table->string('source')->nullable();
             $table->uuid('received_by');
-            $table->integer('total_items')->default(0);
-            $table->decimal('total_value',14,2)->default(0);
+            $table->integer('in_items')->default(0); // total item yang masuk di batch ini
+            $table->integer('out_items')->default(0);  // item yang keluar dari batch ini
+            $table->integer('remaining_items')->default(0); // item yang tersisa di batch ini
+            $table->decimal('original_price',14,2)->default(0);
 
             $table->foreign('received_by')->references('id')->on(Table::users->name)->constrained('users');
             $table->timestamps();

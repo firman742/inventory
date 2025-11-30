@@ -19,8 +19,10 @@ class StockInBatch extends Model
         'reference',
         'source',
         'received_by',
-        'total_items',
-        'total_value',
+        'in_items',
+        'out_items',
+        'remaining_items',
+        'original_price',
     ];
 
     /**
