@@ -177,6 +177,7 @@ class ComposerStaticInit200e74669a564f144967ce5a620e59fe
         ),
         'A' => 
         array (
+            'ArchTech\\Enums\\' => 15,
             'App\\' => 4,
         ),
     );
@@ -344,8 +345,8 @@ class ComposerStaticInit200e74669a564f144967ce5a620e59fe
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -390,8 +391,8 @@ class ComposerStaticInit200e74669a564f144967ce5a620e59fe
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces',
-            1 => __DIR__ . '/..' . '/league/uri',
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
         'League\\MimeTypeDetection\\' => 
         array (
@@ -521,6 +522,10 @@ class ComposerStaticInit200e74669a564f144967ce5a620e59fe
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
+        'ArchTech\\Enums\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/archtechx/enums/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -529,9 +534,35 @@ class ComposerStaticInit200e74669a564f144967ce5a620e59fe
     );
 
     public static $classMap = array (
+        'App\\Enums\\Table' => __DIR__ . '/../..' . '/app/Enums/Table.php',
+        'App\\Enums\\TypeTransaction' => __DIR__ . '/../..' . '/app/Enums/TypeTransaction.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\Internal\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/Internal/ProductController.php',
+        'App\\Http\\Controllers\\Internal\\ProductTypeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Internal/ProductTypeController.php',
+        'App\\Http\\Controllers\\Internal\\StockInBatchController' => __DIR__ . '/../..' . '/app/Http/Controllers/Internal/StockInBatchController.php',
+        'App\\Http\\Controllers\\Public\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Public/AuthController.php',
+        'App\\Http\\Middleware\\SessionAuthMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/SessionAuthMiddleware.php',
+        'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
+        'App\\Models\\ProductType' => __DIR__ . '/../..' . '/app/Models/ProductType.php',
+        'App\\Models\\Serial' => __DIR__ . '/../..' . '/app/Models/Serial.php',
+        'App\\Models\\StockInBatch' => __DIR__ . '/../..' . '/app/Models/StockInBatch.php',
+        'App\\Models\\StockOut' => __DIR__ . '/../..' . '/app/Models/StockOut.php',
+        'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
+        'ArchTech\\Enums\\Comparable' => __DIR__ . '/..' . '/archtechx/enums/src/Comparable.php',
+        'ArchTech\\Enums\\Exceptions\\UndefinedCaseError' => __DIR__ . '/..' . '/archtechx/enums/src/Exceptions/UndefinedCaseError.php',
+        'ArchTech\\Enums\\From' => __DIR__ . '/..' . '/archtechx/enums/src/From.php',
+        'ArchTech\\Enums\\InvokableCases' => __DIR__ . '/..' . '/archtechx/enums/src/InvokableCases.php',
+        'ArchTech\\Enums\\Meta\\Meta' => __DIR__ . '/..' . '/archtechx/enums/src/Meta/Meta.php',
+        'ArchTech\\Enums\\Meta\\MetaProperty' => __DIR__ . '/..' . '/archtechx/enums/src/Meta/MetaProperty.php',
+        'ArchTech\\Enums\\Meta\\Reflection' => __DIR__ . '/..' . '/archtechx/enums/src/Meta/Reflection.php',
+        'ArchTech\\Enums\\Metadata' => __DIR__ . '/..' . '/archtechx/enums/src/Metadata.php',
+        'ArchTech\\Enums\\Names' => __DIR__ . '/..' . '/archtechx/enums/src/Names.php',
+        'ArchTech\\Enums\\Options' => __DIR__ . '/..' . '/archtechx/enums/src/Options.php',
+        'ArchTech\\Enums\\PHPStan\\InvokableCases\\ReflectionExtension' => __DIR__ . '/..' . '/archtechx/enums/src/PHPStan/InvokableCases/ReflectionExtension.php',
+        'ArchTech\\Enums\\PHPStan\\InvokableCases\\StaticInvokableCaseMethodReflection' => __DIR__ . '/..' . '/archtechx/enums/src/PHPStan/InvokableCases/StaticInvokableCaseMethodReflection.php',
+        'ArchTech\\Enums\\Values' => __DIR__ . '/..' . '/archtechx/enums/src/Values.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',

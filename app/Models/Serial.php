@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Serial extends Model
 {
-    use HasUuids, HasFactory, SoftDeletes;
+    use HasUuids, HasFactory;
 
     protected $table = Table::serials->name;
 
@@ -22,6 +22,8 @@ class Serial extends Model
         'status',
         'location',
         'unit_price',
+        'source',
+        'scan_format',
         'added_by',
     ];
 

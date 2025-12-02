@@ -7,7 +7,12 @@
     {{-- ======================= DETAIL STOCK IN =========================== --}}
     <div class="card mb-4">
         <div class="card-body">
-            <h4 class="fw-semibold mb-3">Detail Stock In Batch</h4>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-semibold mb-3">Detail Stock In Batch</h4>
+                <a href="{{ route('stock-in.index') }}" class="btn btn-secondary">
+                    <i class="ti ti-arrow-left"></i> Kembali
+                </a>
+            </div>
 
             <div class="row">
                 {{-- Kolom Kiri --}}
@@ -91,9 +96,15 @@
             <form action="{{ route('stock-in.serials.store', $stockInBatch) }}" method="POST">
                 @csrf
 
+                 <!-- Checkbox untuk Enable Manual Input -->
+                 <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="enable-manual">
+                    <label class="form-check-label" for="enable-manual">Enable Manual Input</label>
+                </div>
+
                 <div class="mb-3">
                     <label>Serial Number</label>
-                    <input id="serial_number" type="text" name="serial_number" class="form-control" required>
+                    <input id="serial_number" type="text" name="serial_number" class="form-control" readonly required>
                 </div>
 
                 <div class="mb-3">
@@ -109,6 +120,10 @@
                     <label>Unit Price</label>
                     <input type="number" name="unit_price" class="form-control" required min="0">
                 </div>
+
+                <!-- Hidden inputs untuk source dan scan_format -->
+                <input type="hidden" name="source" id="source" value="manual">
+                <input type="hidden" name="scan_format" id="scan_format" value="">
 
                 <button class="btn btn-success">
                     <i class="ti ti-device-floppy"></i> Simpan Serial
@@ -130,6 +145,8 @@
                         <th>Produk</th>
                         <th>Unit Price</th>
                         <th>Status</th>
+                        <th>Source</th> <!-- Kolom baru untuk source -->
+                        <th>Scan Format</th> <!-- Kolom baru untuk scan_format -->
                         <th>Ditambahkan Oleh</th>
                         <th>Tanggal</th>
                     </tr>
@@ -144,12 +161,14 @@
                             <td>
                                 <span class="badge bg-success">{{ $serial->status }}</span>
                             </td>
+                            <td>{{ ucfirst(str_replace('_', ' ', $serial->source)) }}</td> <!-- Tampilkan source -->
+                            <td>{{ $serial->scan_format ?? '-' }}</td> <!-- Tampilkan scan_format -->
                             <td>{{ $serial->addedBy->name ?? '-' }}</td>
                             <td>{{ $serial->created_at->format('d M Y H:i') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada serial</td>
+                            <td colspan="8" class="text-center">Belum ada serial</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -168,10 +187,47 @@
         const resultBox = document.getElementById("result");
         const hwInput = document.getElementById("hw-input");
         const serialInput = document.getElementById("serial_number");
+        const enableManualCheckbox = document.getElementById("enable-manual");
+        const sourceInput = document.getElementById("source");
+        const scanFormatInput = document.getElementById("scan_format");
 
         let html5QrCode;
         let cameraRunning = false;
         const readerId = "reader";
+
+        // Fungsi untuk mendeteksi format barcode sederhana (berdasarkan pola umum)
+        // Ini digunakan untuk hardware scanner karena ZXing-js tidak langsung mendukung decode dari string mentah.
+        // Jika perlu integrasi ZXing-js penuh, bisa ditambahkan decode dari string.
+        function detectFormat(code) {
+            if (!code) return "";
+            const length = code.length;
+            // EAN-13: Biasanya 12-13 digit numerik
+            if (length >= 12 && length <= 13 && /^\d+$/.test(code)) {
+                return "EAN_13";
+            }
+            // QR_CODE: Biasanya panjang variabel, bisa dimulai dengan karakter tertentu atau pola
+            // Untuk deteksi sederhana, asumsikan jika bukan EAN dan panjang > 10, atau ada pola tertentu
+            if (length > 10 && /[^0-9]/.test(code)) { // Jika ada non-digit, asumsikan QR
+                return "QR_CODE";
+            }
+            // Tambahkan deteksi lain jika perlu (e.g., CODE_128)
+            return ""; // Tidak terdeteksi
+        }
+
+        // Event listener untuk checkbox Enable Manual Input
+        enableManualCheckbox.addEventListener("change", () => {
+            if (enableManualCheckbox.checked) {
+                serialInput.readOnly = false; // Editable jika dicentang
+                sourceInput.value = "manual";
+                scanFormatInput.value = "";
+                resultBox.innerHTML = "Mode Manual: Input serial number secara manual.";
+            } else {
+                serialInput.readOnly = true; // Readonly jika tidak dicentang
+                sourceInput.value = "manual"; // Tetap manual, tapi readonly
+                scanFormatInput.value = "";
+                resultBox.innerHTML = "Mode Scan: Gunakan scanner untuk input.";
+            }
+        });
 
         function onScanSuccess(decodedText, decodedResult) {
             resultBox.innerHTML = `
@@ -180,6 +236,8 @@
             `;
 
             serialInput.value = decodedText;
+            sourceInput.value = "camera";
+            scanFormatInput.value = decodedResult.result.format.formatName;
         }
 
         function onScanFailure(error) {
@@ -187,7 +245,6 @@
         }
 
         // ==================== SCAN BY IMAGE ====================
-        // ==================== SCAN BY IMAGE (PERBAIKAN RESMI) ====================
         const scanImageBtn = document.getElementById("scan-image-btn");
         const imagePicker = document.getElementById("image-picker");
 
@@ -224,6 +281,8 @@
         `;
 
                 serialInput.value = decodedText;
+                sourceInput.value = "upload_image";
+                scanFormatInput.value = detectFormat(decodedText); // Deteksi format dari decodedText
 
             } catch (err) {
                 console.error("Scan gagal:", err);
@@ -333,6 +392,8 @@
             const code = hwInput.value;
             resultBox.innerHTML = `<b>Kode:</b> ${code} <br><b>Sumber:</b> Hardware Scanner`;
             serialInput.value = code;
+            sourceInput.value = "hardware_scanner";
+            scanFormatInput.value = detectFormat(code);
         });
 
         let hwBuffer = "";
@@ -359,6 +420,8 @@
                         <b>Sumber:</b> Hardware Scanner
                     `;
                     serialInput.value = hwBuffer;
+                    sourceInput.value = "hardware_scanner";
+                    scanFormatInput.value = detectFormat(hwBuffer);
                 }
 
                 hwBuffer = "";

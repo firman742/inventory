@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Internal;
 
+use App\Enums\SourceSerial;
+use App\Enums\TypeTransaction;
 use App\Models\Serial;
 use App\Models\StockInBatch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Transaction;
+use Nette\Utils\Type;
 
 class StockInBatchController extends Controller
 {
@@ -88,11 +92,18 @@ class StockInBatchController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StockInBatch $stockInBatch)
+    public function destroy(string $id)
     {
+        $stockInBatch = StockInBatch::with('serials')->findOrFail($id);
+
+        if ($stockInBatch->serials->count() > 0) {
+            return back()->with('error', 'Cannot delete Stock In Batch with associated serials.');
+        }
+
         $stockInBatch->delete();
-        return redirect()->route("stock-in.index")->with('success', 'Stock In Batch deleted successfully.');
+        return back()->with('success', 'Stock In Batch deleted successfully.');
     }
+
 
     /**
      * Undocumented function
@@ -105,7 +116,7 @@ class StockInBatchController extends Controller
         $products = Product::all();
         $serials = $stock_in->serials()->with('product', 'addedBy')->get();
         return view('Internal.StockInBatches.scanning', [
-            'products' => [],
+            'products' => $products,
             'stockInBatch' => $stock_in,
             'serials' => $serials
         ]);
@@ -123,7 +134,12 @@ class StockInBatchController extends Controller
         $validated = $request->validate([
             'serial_number' => 'required|string|max:255|unique:serials,serial_number',
             'product_id' => 'required|uuid|exists:products,id',
-            'unit_price' => 'required|numeric|min:0'
+            'unit_price' => 'required|numeric|min:0',
+            'source' => [
+                "required",
+                "in:" . implode(',', SourceSerial::values())  // Perbaikan: implode array ke string
+            ],
+            'scan_format' => 'nullable|string|max:255' // Validasi scan_format
         ]);
 
         $validated['stock_in_batch_id'] = $stock_in->id;
@@ -136,6 +152,17 @@ class StockInBatchController extends Controller
         // 2. Update counters
         $stock_in->increment('in_items');
         $stock_in->increment('remaining_items');
+
+        // 3. create transaction record (omitted for brevity) 
+        Transaction::create([
+            'type' => TypeTransaction::STOCK_IN->value,
+            'serial_id' => Serial::where('serial_number', $validated['serial_number'])->first()->id,
+            'product_id' => $validated['product_id'],
+            'qty' => 0,
+            'price' => $validated['unit_price'],
+            'user_id' => session('user')->id,
+            'note' => 'Stock in via batch ' . $stock_in->id . 'from serial number ' . $validated['serial_number'],
+        ]);
 
         return back()->with('success', 'Serial berhasil ditambahkan.');
     }
