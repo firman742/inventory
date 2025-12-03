@@ -5,6 +5,7 @@ use App\Http\Controllers\Public\AuthController;
 use App\Http\Controllers\Internal\ProductController;
 use App\Http\Controllers\Internal\StockOutController;
 use App\Http\Controllers\Internal\ProductTypeController;
+use App\Http\Controllers\Internal\ReportTransactionController;
 use App\Http\Controllers\Internal\StockInBatchController;
 
 Route::get('/', function () {
@@ -51,4 +52,10 @@ Route::middleware(['session.auth'])->group(function () {
     Route::get('stock-out/confirm-create', [StockOutController::class, 'confirmCreate'])->name('stock-out.confirmCreate');
     // Resource routes (akan membuat stock-out.index, stock-out.create, dll.)
     Route::resource('stock-out', StockOutController::class);
+
+    // Report Routes
+    Route::get('transactions/export', [ReportTransactionController::class, 'export'])->name('transactions.export');
+    Route::resource('transactions', ReportTransactionController::class);
+
+
 });
