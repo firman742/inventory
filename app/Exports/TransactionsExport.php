@@ -17,7 +17,6 @@ class TransactionsExport implements FromCollection, WithHeadings
                 'Type' => $transaction->type,
                 'Serial Number' => $transaction->serial->serial_number ?? 'N/A',
                 'Product' => $transaction->product->name ?? 'N/A',
-                'Qty' => $transaction->qty,
                 'Price' => $transaction->price,
                 'User' => $transaction->user->name ?? 'N/A',
                 'Note' => $transaction->note ?? '-',
@@ -30,14 +29,13 @@ class TransactionsExport implements FromCollection, WithHeadings
     {
         return [
             'No',
-            'Type',
+            'Tipe',
             'Serial Number',
-            'Product',
-            'Qty',
-            'Price',
-            'User',
-            'Note',
-            'Created At',
+            'Produk',
+            'Harga',
+            'Penanggung Jawab',
+            'Catatan',
+            'Dibuat Pada',
         ];
     }
 }

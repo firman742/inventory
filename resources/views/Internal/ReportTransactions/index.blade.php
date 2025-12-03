@@ -7,7 +7,7 @@
     <h1 class="mb-4">Riwayat Stok</h1>
 
     <div class="mb-3">
-        <a href="{{ route('transactions.export') }}" class="btn btn-success">Export to Excel</a>
+        <a href="{{ route('transactions.export') }}" class="btn btn-success">Export</a>
     </div>
 
     <div class="card">
@@ -16,14 +16,13 @@
                 <thead class="table-dark">
                     <tr>
                         <th>No</th>
-                        <th>Type</th>
+                        <th>Tipe</th>
                         <th>Serial Number</th>
-                        <th>Product</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>User</th>
-                        <th>Note</th>
-                        <th>Created At</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Penanggung Jawab</th>
+                        <th>Catatan</th>
+                        <th>Dibuat Pada</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +32,6 @@
                             <td>{{ $transaction->type }}</td>
                             <td>{{ $transaction->serial->serial_number ?? 'N/A' }}</td>
                             <td>{{ $transaction->product->name ?? 'N/A' }}</td>
-                            <td>{{ $transaction->qty }}</td>
                             <td>Rp {{ number_format($transaction->price, 0, ',', '.') }}</td>
                             <td>{{ $transaction->user->name ?? 'N/A' }}</td>
                             <td>{{ $transaction->note ?? '-' }}</td>
