@@ -77,8 +77,8 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link justify-content-between"
-                        href="https://bootstrapdemos.adminmart.com/modernize/dist/main/index2.html"
+                    <a class="sidebar-link justify-content-between {{ request()->routeIs('stock-out.*') ? 'active' : '' }}"
+                        href="{{ route('stock-out.index') }}"
                         aria-expanded="false">
                         <div class="d-flex align-items-center gap-3">
                             <span class="d-flex">

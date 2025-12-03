@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Public\AuthController;
 use App\Http\Controllers\Internal\ProductController;
+use App\Http\Controllers\Internal\StockOutController;
 use App\Http\Controllers\Internal\ProductTypeController;
 use App\Http\Controllers\Internal\StockInBatchController;
 
@@ -42,6 +43,12 @@ Route::middleware(['session.auth'])->group(function () {
 
     Route::get('stock-in/{stock_in}/serials', [StockInBatchController::class, 'serials'])->name('stock-in.serials.show');
     Route::post('stock-in/{stock_in}/serials', [StockInBatchController::class, 'storeSerial'])
-    ->name('stock-in.serials.store');
+        ->name('stock-in.serials.store');
 
+    // Stock Out Routes
+    // Custom routes HARUS ditempatkan SEBELUM resource untuk menghindari konflik
+    Route::post('stock-out/validate-scan', [StockOutController::class, 'validateScan'])->name('stock-out.validateScan');
+    Route::get('stock-out/confirm-create', [StockOutController::class, 'confirmCreate'])->name('stock-out.confirmCreate');
+    // Resource routes (akan membuat stock-out.index, stock-out.create, dll.)
+    Route::resource('stock-out', StockOutController::class);
 });
